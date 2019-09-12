@@ -1,14 +1,62 @@
 # qrcode
+A flutter plugin for scanning QR codes. Use AVCaptureSession in iOS and zxing in Android.
 
-A new flutter plugin project.
+<img src="https://github.com/SiriDx/qrcode/blob/master/res/demo.PNG" width="375" hegiht="667"/>
 
-## Getting Started
+## Usage
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+```dart
+class _DemoState extends State<Demo> {
+  QRCaptureController _captureController = QRCaptureController();
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+  @override
+  void initState() {
+    super.initState();
+    _captureController.onCapture((data) {
+      print('onCapture----$data');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        floatingActionButton: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FlatButton(
+              onPressed: () {
+                _captureController.pause();
+              },
+              child: Text('pause'),
+            ),
+            FlatButton(
+              onPressed: () {
+                _captureController.resume();
+              },
+              child: Text('resume'),
+            ),
+          ],
+        ),
+        body: QRCaptureView(
+          controller: _captureController,
+        ),
+      ),
+    );
+  }
+}
+```
+
+## Integration
+
+### iOS
+To use on iOS, you must add the following to your Info.plist
+
+
+```
+<key>NSCameraUsageDescription</key>
+<string>Camera permission is required for barcode scanning.</string>
+<key>io.flutter.embedded_views_preview</key>
+<true/>
+```
