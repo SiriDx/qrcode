@@ -1,8 +1,6 @@
 # qrcode
 A flutter plugin for scanning QR codes. Use AVCaptureSession in iOS and zxing in Android.
 
-<img src="https://github.com/SiriDx/qrcode/blob/master/res/demo.PNG" width="375" hegiht="667"/>
-
 ## Usage
 
 ```dart
