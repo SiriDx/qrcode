@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+import 'package:qrcode/qrcode.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
+  QRCaptureController _captureController = QRCaptureController();
+  Animation<Alignment> _animation;
+  AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _captureController.onCapture((data) {
+      print('onCapture----$data');
+    });
+
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animation =
+        AlignmentTween(begin: Alignment.topCenter, end: Alignment.bottomCenter)
+            .animate(_animationController)
+              ..addListener(() {
+                setState(() {});
+              })
+              ..addStatusListener((status) {
+                if (status == AnimationStatus.completed) {
+                  _animationController.reverse();
+                } else if (status == AnimationStatus.dismissed) {
+                  _animationController.forward();
+                }
+              });
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        floatingActionButton: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FlatButton(
+              onPressed: () {
+                _captureController.pause();
+              },
+              child: Text('pause'),
+            ),
+            FlatButton(
+              onPressed: () {
+                _captureController.resume();
+              },
+              child: Text('resume'),
+            ),
+          ],
+        ),
+        appBar: AppBar(
+          title: const Text('扫一扫'),
+        ),
+        body: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            QRCaptureView(
+              controller: _captureController,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 56),
+              child: AspectRatio(
+                aspectRatio: 264 / 258.0,
+                child: Stack(
+                  alignment: _animation.value,
+                  children: <Widget>[
+                    Image.asset('images/sao@3x.png'),
+                    Image.asset('images/tiao@3x.png')
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
