@@ -2,7 +2,7 @@ name: qrcode
 description: A new flutter plugin project.
 version: 0.0.1
 author: chendaxin
-homepage: https://github.com/SiriDx
+homepage: https://github.com/SiriDx/qrcode
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
