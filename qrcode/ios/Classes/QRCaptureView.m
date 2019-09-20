@@ -75,6 +75,19 @@
         [self pause];
     } else if ([call.method isEqualToString:@"resume"]) {
         [self resume];
+    } else if ([call.method isEqualToString:@"setTorchMode"]) {
+        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        if (!device.hasTorch) {
+            return;
+        }
+        NSNumber *isOn = call.arguments;
+        [device lockForConfiguration:nil];
+        if (isOn.boolValue) {
+            [device setTorchMode:AVCaptureTorchModeOn];
+        } else {
+            [device setTorchMode:AVCaptureTorchModeOff];
+        }
+        [device unlockForConfiguration];
     }
 }
 

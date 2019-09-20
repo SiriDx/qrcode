@@ -1,3 +1,7 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* init
+
+## 1.0.2
+
+* add torchMode setting
