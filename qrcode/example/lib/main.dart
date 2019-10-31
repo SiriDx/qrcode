@@ -57,8 +57,12 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         body: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            QRCaptureView(
+            Container(
+              width: 250,
+              height: 250,
+              child: QRCaptureView(
               controller: _captureController,
+            ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 56),

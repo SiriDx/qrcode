@@ -1,21 +1,18 @@
 //
 //  QRCaptureView.m
-//  Runner
+//  Pods-Runner
 //
-//  Created by cdx on 2019/8/2.
-//  Copyright © 2019 The Chromium Authors. All rights reserved.
+//  Created by cdx on 2019/10/28.
 //
 
 #import "QRCaptureView.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface QRCaptureView ()<AVCaptureMetadataOutputObjectsDelegate, FlutterPlugin>
-    
+@interface QRCaptureView () <AVCaptureMetadataOutputObjectsDelegate, FlutterPlugin>
+
 @property(nonatomic, strong) AVCaptureSession *session;
-
 @property(nonatomic, strong) FlutterMethodChannel *channel;
-
-@property(nonatomic, strong) UIView *captureView;
+@property(nonatomic, weak) AVCaptureVideoPreviewLayer *captureLayer;
 
 @end
 
@@ -28,15 +25,8 @@
     return _session;
 }
 
-- (UIView *)captureView {
-    if (!_captureView) {
-        
-    }
-    return _captureView;
-}
-
 - (instancetype)initWithFrame:(CGRect)frame viewIdentifier:(int64_t)viewId arguments:(id _Nullable)args registrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    if (self = [super init]) {
+    if (self = [super initWithFrame:frame]) {
         NSString *name = [NSString stringWithFormat:@"plugins/qr_capture/method_%lld", viewId];
         FlutterMethodChannel *channel = [FlutterMethodChannel
                                          methodChannelWithName:name
@@ -44,30 +34,32 @@
         self.channel = channel;
         [registrar addMethodCallDelegate:self channel:channel];
         
-        UIView *captureView = [[UIView alloc] init];
-        self.captureView = captureView;
-        captureView.frame = [UIScreen mainScreen].bounds;
+        AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
+        self.captureLayer = layer;
+        
+        layer.backgroundColor = [UIColor yellowColor].CGColor;
+        [self.layer addSublayer:layer];
+        layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         
         AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
         AVCaptureDeviceInput *input = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
         AVCaptureMetadataOutput *output = [[AVCaptureMetadataOutput alloc] init];
-        [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
         [self.session addInput:input];
         [self.session addOutput:output];
         self.session.sessionPreset = AVCaptureSessionPresetHigh;
-        output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
-        AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
-        [captureView.layer addSublayer:layer];
-        layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        layer.frame = captureView.bounds;
+       
+        output.metadataObjectTypes = output.availableMetadataObjectTypes;
+        [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+        [output setMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
         
         [self.session startRunning];
     }
     return self;
 }
 
-- (nonnull UIView *)view {
-    return self.captureView;
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.captureLayer.frame = self.bounds;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {

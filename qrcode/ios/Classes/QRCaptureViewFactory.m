@@ -7,7 +7,7 @@
 //
 
 #import "QRCaptureViewFactory.h"
-#import "QRCaptureView.h"
+#import "QRCapturePlatformView.h"
 
 @interface QRCaptureViewFactory ()
     
@@ -27,7 +27,7 @@
 
     
 - (nonnull NSObject<FlutterPlatformView> *)createWithFrame:(CGRect)frame viewIdentifier:(int64_t)viewId arguments:(id _Nullable)args {
-    return [[QRCaptureView alloc] initWithFrame:frame viewIdentifier:viewId arguments:args registrar:self.registrar];
+    return [[QRCapturePlatformView alloc] initWithFrame:frame viewIdentifier:viewId arguments:args registrar:self.registrar];
 }
 
 @end
