@@ -15,12 +15,17 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
 
   bool _isTorchOn = false;
 
+  String _captureText = '';
+
   @override
   void initState() {
     super.initState();
 
     _captureController.onCapture((data) {
       print('onCapture----$data');
+      setState(() {
+        _captureText = data;
+      });
     });
 
     _animationController =
@@ -80,6 +85,9 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
             Align(
               alignment: Alignment.bottomCenter,
               child: _buildToolBar(),
+            ),
+            Container(
+              child: Text('$_captureText'),
             )
           ],
         ),

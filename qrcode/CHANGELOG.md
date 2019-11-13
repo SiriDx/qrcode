@@ -9,3 +9,7 @@
 ## 1.0.3
 
 * fix frame setting on iOS
+
+## 1.0.4
+
+* add barCode scan for iOS

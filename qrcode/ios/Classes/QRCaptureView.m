@@ -50,7 +50,9 @@
        
         output.metadataObjectTypes = output.availableMetadataObjectTypes;
         [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-        [output setMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
+        [output setMetadataObjectTypes:@[AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
+        AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
+        AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode]];
         
         [self.session startRunning];
     }
