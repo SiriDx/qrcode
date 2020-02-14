@@ -35,7 +35,7 @@
         [registrar addMethodCallDelegate:self channel:channel];
         
         AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-        if(status == AVAuthorizationStatusAuthorized) {
+        if(status == AVAuthorizationStatusAuthorized || status == AVAuthorizationStatusNotDetermined) {
             
             AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
             self.captureLayer = layer;
@@ -59,7 +59,7 @@
             
             [self.session startRunning];
 
-        } else {
+        } else { 
 
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tips" message:@"Authorization is required to use the camera, please check your permission settings: Settings> Privacy> Camera" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
                 [alert show];
