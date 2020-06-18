@@ -40,7 +40,7 @@
             AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
             self.captureLayer = layer;
             
-            layer.backgroundColor = [UIColor yellowColor].CGColor;
+            layer.backgroundColor = [UIColor blackColor].CGColor;
             [self.layer addSublayer:layer];
             layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
             
@@ -50,14 +50,16 @@
             [self.session addInput:input];
             [self.session addOutput:output];
             self.session.sessionPreset = AVCaptureSessionPresetHigh;
-        
+            
             output.metadataObjectTypes = output.availableMetadataObjectTypes;
             [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
             [output setMetadataObjectTypes:@[AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
             AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
             AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode]];
             
-            [self.session startRunning];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                  [self.session startRunning];
+             });
 
         } else { 
 
@@ -100,7 +102,7 @@
 - (void)resume {
     [self.session startRunning];
 }
-     
+
 - (void)pause {
     [self.session stopRunning];
 }
