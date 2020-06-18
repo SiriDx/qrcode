@@ -34,30 +34,38 @@
         self.channel = channel;
         [registrar addMethodCallDelegate:self channel:channel];
         
-        AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
-        self.captureLayer = layer;
-        
-        layer.backgroundColor = [UIColor blackColor].CGColor;
-        [self.layer addSublayer:layer];
-        layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        
-        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-        AVCaptureDeviceInput *input = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
-        AVCaptureMetadataOutput *output = [[AVCaptureMetadataOutput alloc] init];
-        
-        [self.session addInput:input];
-        [self.session addOutput:output];
-        self.session.sessionPreset = AVCaptureSessionPresetHigh;
-        
-        output.metadataObjectTypes = output.availableMetadataObjectTypes;
-        [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-        [output setMetadataObjectTypes:@[AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
-                                         AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
-                                         AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode]];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self.session startRunning];
-        });
+        AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        if(status == AVAuthorizationStatusAuthorized || status == AVAuthorizationStatusNotDetermined) {
+            
+            AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
+            self.captureLayer = layer;
+            
+            layer.backgroundColor = [UIColor blackColor].CGColor;
+            [self.layer addSublayer:layer];
+            layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            
+            AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+            AVCaptureDeviceInput *input = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
+            AVCaptureMetadataOutput *output = [[AVCaptureMetadataOutput alloc] init];
+            [self.session addInput:input];
+            [self.session addOutput:output];
+            self.session.sessionPreset = AVCaptureSessionPresetHigh;
+            
+            output.metadataObjectTypes = output.availableMetadataObjectTypes;
+            [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+            [output setMetadataObjectTypes:@[AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode39Mod43Code,
+            AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeCode128Code,
+            AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode]];
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                  [self.session startRunning];
+             });
+
+        } else { 
+
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tips" message:@"Authorization is required to use the camera, please check your permission settings: Settings> Privacy> Camera" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+                [alert show];
+        }
     }
     return self;
 }
