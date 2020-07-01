@@ -11,7 +11,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  qrcode: ^1.0.4
+  qrcode: ^1.0.5
 ```
 
 #### Install it
