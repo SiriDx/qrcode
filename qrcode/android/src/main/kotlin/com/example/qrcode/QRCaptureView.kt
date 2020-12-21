@@ -14,6 +14,7 @@ import android.hardware.Camera.CameraInfo
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.BarcodeView
+import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -109,6 +110,7 @@ class QRCaptureView(private val registrar: PluginRegistry.Registrar, id: Int) :
         checkAndRequestPermission(null)
 
         val barcode = BarcodeView(registrar.activity())
+        barcode.decoderFactory = DefaultDecoderFactory(null, null, null, 2)
         this.barcodeView = barcode
         barcode.decodeContinuous(
                 object : BarcodeCallback {
