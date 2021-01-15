@@ -10,8 +10,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   QRCaptureController _captureController = QRCaptureController();
-  Animation<Alignment> _animation;
-  AnimationController _animationController;
+  late Animation<Alignment> _animation;
+  late AnimationController _animationController;
 
   bool _isTorchOn = false;
 
@@ -66,8 +66,8 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
               width: 250,
               height: 250,
               child: QRCaptureView(
-              controller: _captureController,
-            ),
+                controller: _captureController,
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 56),
@@ -97,33 +97,33 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
 
   Widget _buildToolBar() {
     return Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlatButton(
-              onPressed: () {
-                _captureController.pause();
-              },
-              child: Text('pause'),
-            ),
-            FlatButton(
-              onPressed: () {
-                if (_isTorchOn) {
-                  _captureController.torchMode = CaptureTorchMode.off;
-                } else {
-                  _captureController.torchMode = CaptureTorchMode.on;
-                }
-                _isTorchOn = !_isTorchOn;
-              },
-              child: Text('torch'),
-            ),
-            FlatButton(
-              onPressed: () {
-                _captureController.resume();
-              },
-              child: Text('resume'),
-            ),
-          ],
-        );
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        FlatButton(
+          onPressed: () {
+            _captureController.pause();
+          },
+          child: Text('pause'),
+        ),
+        FlatButton(
+          onPressed: () {
+            if (_isTorchOn) {
+              _captureController.torchMode = CaptureTorchMode.off;
+            } else {
+              _captureController.torchMode = CaptureTorchMode.on;
+            }
+            _isTorchOn = !_isTorchOn;
+          },
+          child: Text('torch'),
+        ),
+        FlatButton(
+          onPressed: () {
+            _captureController.resume();
+          },
+          child: Text('resume'),
+        ),
+      ],
+    );
   }
 }
