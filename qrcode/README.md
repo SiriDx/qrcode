@@ -81,3 +81,6 @@ To use on iOS, you must add the following to your Info.plist
 <key>io.flutter.embedded_views_preview</key>
 <true/>
 ```
+
+### Android
+To use on Android, increase the project's minSdk version to at least 24
