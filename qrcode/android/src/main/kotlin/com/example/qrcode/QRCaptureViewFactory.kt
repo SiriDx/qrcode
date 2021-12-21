@@ -1,18 +1,20 @@
 package com.example.qrcode
 
 import android.content.Context
-import com.example.qrcode.QRCaptureView
-import io.flutter.plugin.common.PluginRegistry
+import android.view.View
+import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
 
-class QRCaptureViewFactory(private val registrar: PluginRegistry.Registrar) :
-        PlatformViewFactory(StandardMessageCodec.INSTANCE) {
-
-    override fun create(context: Context, id: Int, obj: Any?): PlatformView {
-        return QRCaptureView(registrar,id)
+class QRCaptureViewFactory internal constructor(
+    private val messenger: BinaryMessenger,
+    private val containerView: View?
+) :
+    PlatformViewFactory(StandardMessageCodec.INSTANCE) {
+    override fun create(context: Context, id: Int, args: Any): PlatformView {
+        val params = args as Map<String, Any>
+        return QRCaptureView(context, messenger, id, params, containerView)
     }
-
 }
