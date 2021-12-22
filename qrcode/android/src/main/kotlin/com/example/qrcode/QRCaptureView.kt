@@ -20,12 +20,16 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.platform.PlatformView
 
-class QRCaptureView(context: Context,
+class QRCaptureView(activity: Activity,
+                    context: Context,
                     messenger: BinaryMessenger,
                     id: Int,
                     params: Map<String, Any>?,
                     containerView: View? ) :
         PlatformView, MethodCallHandler {
+
+    private val mActivity = activity
+
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when(call?.method){
             "checkAndRequestPermission" -> {
@@ -79,22 +83,20 @@ class QRCaptureView(context: Context,
         if (hasCameraPermission()) {
             cameraPermissionContinuation?.run()
         }
-//        else {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                requestingPermission = true
-//                val activity = this. as Activity
-//                activity
-//                        .requestPermissions(
-//                                arrayOf(Manifest.permission.CAMERA),
-//                                CAMERA_REQUEST_ID)
-//            }
-//        }
+        else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestingPermission = true
+                mActivity
+                        .requestPermissions(
+                                arrayOf(Manifest.permission.CAMERA),
+                                CAMERA_REQUEST_ID)
+            }
+        }
     }
 
     private fun hasCameraPermission(): Boolean {
-//        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-//                activity.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-        return true
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                mActivity.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
     }
 
 
@@ -103,7 +105,6 @@ class QRCaptureView(context: Context,
     }
 
     var barcodeView: BarcodeView? = null
-//    private val activity = context.applicationContext as Activity
     var cameraPermissionContinuation: Runnable? = null
     var requestingPermission = false
     val channel: MethodChannel
@@ -114,7 +115,7 @@ class QRCaptureView(context: Context,
         channel.setMethodCallHandler(this)
         checkAndRequestPermission(null)
 
-        val barcode = BarcodeView(context)
+        val barcode = BarcodeView(activity)
         this.barcodeView = barcode
         barcode.decodeContinuous(
                 object : BarcodeCallback {
@@ -128,37 +129,37 @@ class QRCaptureView(context: Context,
 
         barcode.resume()
 
-//        activity.application.registerActivityLifecycleCallbacks(
-//         object : Application.ActivityLifecycleCallbacks {
-//             override fun onActivityPaused(p0: Activity?) {
-//                 if (p0 == activity) {
-//                     barcodeView?.pause()
-//                 }
-//             }
-//
-//             override fun onActivityResumed(p0: Activity?) {
-//                 if (p0 == activity) {
-//                     barcodeView?.resume()
-//                 }
-//             }
-//
-//             override fun onActivityStarted(p0: Activity?) {
-//             }
-//
-//             override fun onActivityDestroyed(p0: Activity?) {
-//             }
-//
-//             override fun onActivitySaveInstanceState(p0: Activity?, p1: Bundle?) {
-//             }
-//
-//             override fun onActivityStopped(p0: Activity?) {
-//             }
-//
-//             override fun onActivityCreated(p0: Activity?, p1: Bundle?) {
-//             }
-//
-//         }
-//        )
+        activity.application.registerActivityLifecycleCallbacks(
+         object : Application.ActivityLifecycleCallbacks {
+             override fun onActivityPaused(p0: Activity?) {
+                 if (p0 == activity) {
+                     barcodeView?.pause()
+                 }
+             }
+
+             override fun onActivityResumed(p0: Activity?) {
+                 if (p0 == activity) {
+                     barcodeView?.resume()
+                 }
+             }
+
+             override fun onActivityStarted(p0: Activity?) {
+             }
+
+             override fun onActivityDestroyed(p0: Activity?) {
+             }
+
+             override fun onActivitySaveInstanceState(p0: Activity?, p1: Bundle?) {
+             }
+
+             override fun onActivityStopped(p0: Activity?) {
+             }
+
+             override fun onActivityCreated(p0: Activity?, p1: Bundle?) {
+             }
+
+         }
+        )
     }
 
     override fun getView(): View {
