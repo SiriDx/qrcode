@@ -3,6 +3,7 @@ package com.example.qrcode
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -12,7 +13,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 class QrcodePlugin: FlutterPlugin, MethodCallHandler  {
   private lateinit var channel : MethodChannel
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPluginBinding) {
     val messenger: BinaryMessenger = flutterPluginBinding.binaryMessenger
     flutterPluginBinding
       .platformViewRegistry
@@ -30,7 +31,7 @@ class QrcodePlugin: FlutterPlugin, MethodCallHandler  {
     }
   }
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onDetachedFromEngine(@NonNull binding: FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
   }
 
