@@ -3,7 +3,6 @@ package com.example.qrcode
 import android.Manifest
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Build
@@ -13,6 +12,7 @@ import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.BarcodeView
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -20,12 +20,11 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.platform.PlatformView
 
-class QRCaptureView(activity: Activity,
-                    context: Context,
+class QRCaptureView(registrar: PluginRegistry.Registrar?,
+                    binding: ActivityPluginBinding?,
+                    activity: Activity,
                     messenger: BinaryMessenger,
-                    id: Int,
-                    params: Map<String, Any>?,
-                    containerView: View? ) :
+                    id: Int) :
         PlatformView, MethodCallHandler {
 
     private val mActivity = activity
@@ -110,7 +109,8 @@ class QRCaptureView(activity: Activity,
     val channel: MethodChannel
 
     init {
-//        activity.addRequestPermissionsResultListener(CameraRequestPermissionsListener())
+        registrar?.addRequestPermissionsResultListener(CameraRequestPermissionsListener())
+        binding?.addRequestPermissionsResultListener(CameraRequestPermissionsListener())
         channel = MethodChannel(messenger, "plugins/qr_capture/method_$id")
         channel.setMethodCallHandler(this)
         checkAndRequestPermission(null)
