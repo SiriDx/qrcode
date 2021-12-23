@@ -47,13 +47,6 @@ class QRCaptureView(registrar: PluginRegistry.Registrar?,
                 pause()
             }
         }
-
-        when(call?.method){
-            "setTorchMode" -> {
-                val isOn = call.arguments as Boolean
-                barcodeView?.setTorch(isOn);
-            }
-        }
     }
 
     private fun resume() {

@@ -5,8 +5,6 @@ import 'package:flutter/widgets.dart';
 
 typedef CaptureCallback(String data);
 
-enum CaptureTorchMode { on, off }
-
 class QRCaptureController {
   late MethodChannel _methodChannel;
   CaptureCallback? _capture;
@@ -34,11 +32,6 @@ class QRCaptureController {
 
   void onCapture(CaptureCallback capture) {
     _capture = capture;
-  }
-
-  set torchMode(CaptureTorchMode mode) {
-    var isOn = mode == CaptureTorchMode.on;
-    _methodChannel.invokeMethod('setTorchMode', isOn);
   }
 }
 
