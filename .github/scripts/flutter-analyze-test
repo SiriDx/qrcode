@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [[ "$*" =~ "--skip-coverage" ]]; then
+    flutter pub get || exit 1 && \
+    flutter analyze || exit 2 && \
+    echo "Running tests (no coverage)" && \
+    time flutter test --machine > test-results.json || exit 3
+else
+    flutter pub get || exit 1 && \
+    flutter analyze || exit 2 && \
+    echo "Running tests (with coverage)" && \
+    time flutter test --coverage --machine > test-results.json || exit 3
+
+    if [[ "$1" == "--min-coverage" && "$2" != "" ]]; then
+        MIN_COVERAGE="$2"
+    else
+        MIN_COVERAGE="100"
+    fi
+
+    if [[ "$3" == "--exclude" && "$4" != "" ]]; then
+        echo "Excluding $4 from coverage"
+        lcov --remove coverage/lcov.info $4 -o coverage/lcov.info
+    fi
+
+    ACTUAL_COVERAGE=$(genhtml coverage/lcov.info -o coverage | grep lines | grep -Eo '[0-9]+([.][0-9])')
+    if (( $(echo "$ACTUAL_COVERAGE < $MIN_COVERAGE" | bc -l) )); then
+        echo "WARN!!! Coverage: $ACTUAL_COVERAGE% is less than min coverage of $MIN_COVERAGE%"
+    else
+        echo "Coverage: $ACTUAL_COVERAGE% (above threshold of $MIN_COVERAGE%)"
+    fi
+fi
