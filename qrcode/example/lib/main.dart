@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('扫一扫'),
+          title: const Text('amaysim'),
         ),
         body: Stack(
           alignment: Alignment.center,
@@ -98,13 +98,13 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () {
             _captureController.pause();
           },
           child: Text('pause'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             _captureController.resume();
           },

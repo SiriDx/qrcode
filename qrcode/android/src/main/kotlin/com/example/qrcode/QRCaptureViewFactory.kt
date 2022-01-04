@@ -2,7 +2,6 @@ package com.example.qrcode
 
 import android.app.Activity
 import android.content.Context
-import android.view.View
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.PluginRegistry
