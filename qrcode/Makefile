@@ -4,9 +4,6 @@ test:
 test-skip-coverage:
 	../.github/scripts/flutter-analyze-test --skip-coverage
 
-test-only-changes:
-	../.github/scripts/flutter-analyze-test-changes
-
 clean:
 	flutter clean && rm -rf coverage
 

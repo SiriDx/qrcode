@@ -1,15 +1,15 @@
-name: Pull Request (app)
+name: Pull Request (example)
 on:
   pull_request:
     branches: [main, 'epic/*']
     paths:
-      - 'qrcode/**'
-      - '!qrcode/ios/**'
-      - '!qrcode/android/**'
+      - 'qrcode/example/**'
+      - '!qrcode/example/ios/**'
+      - '!qrcode/example/android/**'
 
 jobs:
   app:
-    name: app
+    name: example
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     timeout-minutes: 15
@@ -28,11 +28,11 @@ jobs:
           echo "~/tmp/flutter-2.8.1-stable/flutter/bin" >> $GITHUB_PATH
 
       - name: Flutter analyze and test
-        run: cd qrcode/app && make test-skip-coverage && cd -
+        run: cd qrcode/example && make test-skip-coverage && cd -
 
       - name: Report test results
         uses: actions/upload-artifact@v2
         if: success() || failure()
         with:
           name: test-results
-          path: qrcode/app/test-results.json
+          path: qrcode/example/test-results.json
