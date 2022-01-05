@@ -7,8 +7,6 @@ A flutter plugin for scanning QR codes. Use AVCaptureSession in iOS and zxing in
 class _MyAppState extends State<MyApp> {
   QRCaptureController _captureController = QRCaptureController();
 
-  bool _isTorchOn = false;
-
   @override
   void initState() {
     super.initState();
@@ -46,17 +44,6 @@ class _MyAppState extends State<MyApp> {
                 _captureController.pause();
               },
               child: Text('pause'),
-            ),
-            FlatButton(
-              onPressed: () {
-                if (_isTorchOn) {
-                  _captureController.torchMode = CaptureTorchMode.off;
-                } else {
-                  _captureController.torchMode = CaptureTorchMode.on;
-                }
-                _isTorchOn = !_isTorchOn;
-              },
-              child: Text('torch'),
             ),
             FlatButton(
               onPressed: () {

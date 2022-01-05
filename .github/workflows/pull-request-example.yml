@@ -1,0 +1,38 @@
+name: Pull Request (example)
+on:
+  pull_request:
+    branches: [main, 'epic/*']
+    paths:
+      - 'qrcode/example/**'
+      - '!qrcode/example/ios/**'
+      - '!qrcode/example/android/**'
+
+jobs:
+  app:
+    name: example
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    timeout-minutes: 15
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clone repo
+        uses: actions/checkout@v1
+
+      - name: Set up Flutter
+        run: |
+          ./.github/scripts/flutter-install-ubuntu
+          echo "~/tmp/flutter-2.8.1-stable/flutter/bin" >> $GITHUB_PATH
+
+      - name: Flutter analyze and test
+        run: cd qrcode/example && make test-skip-coverage && cd -
+
+      - name: Report test results
+        uses: actions/upload-artifact@v2
+        if: success() || failure()
+        with:
+          name: test-results
+          path: qrcode/example/test-results.json

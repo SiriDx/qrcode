@@ -13,8 +13,6 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   Animation<Alignment> _animation;
   AnimationController _animationController;
 
-  bool _isTorchOn = false;
-
   String _captureText = '';
 
   @override
@@ -33,16 +31,16 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     _animation =
         AlignmentTween(begin: Alignment.topCenter, end: Alignment.bottomCenter)
             .animate(_animationController)
-              ..addListener(() {
-                setState(() {});
-              })
-              ..addStatusListener((status) {
-                if (status == AnimationStatus.completed) {
-                  _animationController.reverse();
-                } else if (status == AnimationStatus.dismissed) {
-                  _animationController.forward();
-                }
-              });
+          ..addListener(() {
+            setState(() {});
+          })
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              _animationController.reverse();
+            } else if (status == AnimationStatus.dismissed) {
+              _animationController.forward();
+            }
+          });
     _animationController.forward();
   }
 
@@ -57,7 +55,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('扫一扫'),
+          title: const Text('amaysim'),
         ),
         body: Stack(
           alignment: Alignment.center,
@@ -66,8 +64,8 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
               width: 250,
               height: 250,
               child: QRCaptureView(
-              controller: _captureController,
-            ),
+                controller: _captureController,
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 56),
@@ -97,33 +95,22 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
 
   Widget _buildToolBar() {
     return Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlatButton(
-              onPressed: () {
-                _captureController.pause();
-              },
-              child: Text('pause'),
-            ),
-            FlatButton(
-              onPressed: () {
-                if (_isTorchOn) {
-                  _captureController.torchMode = CaptureTorchMode.off;
-                } else {
-                  _captureController.torchMode = CaptureTorchMode.on;
-                }
-                _isTorchOn = !_isTorchOn;
-              },
-              child: Text('torch'),
-            ),
-            FlatButton(
-              onPressed: () {
-                _captureController.resume();
-              },
-              child: Text('resume'),
-            ),
-          ],
-        );
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        TextButton(
+          onPressed: () {
+            _captureController.pause();
+          },
+          child: Text('pause'),
+        ),
+        TextButton(
+          onPressed: () {
+            _captureController.resume();
+          },
+          child: Text('resume'),
+        ),
+      ],
+    );
   }
 }

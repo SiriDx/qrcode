@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir -p ~/tmp/flutter-2.8.1-stable && cd ~/tmp/flutter-2.8.1-stable
+curl -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_2.8.1-stable.tar.xz
+tar xf flutter_linux_2.8.1-stable.tar.xz
+export PATH="$PATH:`pwd`/flutter/bin"
+flutter doctor --verbose
