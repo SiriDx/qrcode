@@ -73,4 +73,5 @@
 
 .flutter-plugins-dependencies
 
+coverage
 test-results.json

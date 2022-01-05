@@ -1,5 +1,5 @@
 test:
-	../.github/scripts/flutter-analyze-test --min-coverage 78
+	../.github/scripts/flutter-analyze-test --min-coverage 82
 
 test-skip-coverage:
 	../.github/scripts/flutter-analyze-test --skip-coverage
