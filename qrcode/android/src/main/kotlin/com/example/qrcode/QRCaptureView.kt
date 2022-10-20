@@ -57,31 +57,31 @@ class QRCaptureView(registrar: PluginRegistry.Registrar?,
 
         activity.application.registerActivityLifecycleCallbacks(
             object : Application.ActivityLifecycleCallbacks {
-                override fun onActivityPaused(p0: Activity?) {
+                override fun onActivityPaused(p0: Activity) {
                     if (p0 == activity) {
                         barcodeView?.pause()
                     }
                 }
 
-                override fun onActivityResumed(p0: Activity?) {
+                override fun onActivityResumed(p0: Activity) {
                     if (p0 == activity) {
                         barcodeView?.resume()
                     }
                 }
 
-                override fun onActivityStarted(p0: Activity?) {
+                override fun onActivityStarted(p0: Activity) {
                 }
 
-                override fun onActivityDestroyed(p0: Activity?) {
+                override fun onActivityDestroyed(p0: Activity) {
                 }
 
-                override fun onActivitySaveInstanceState(p0: Activity?, p1: Bundle?) {
+                override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
                 }
 
-                override fun onActivityStopped(p0: Activity?) {
+                override fun onActivityStopped(p0: Activity) {
                 }
 
-                override fun onActivityCreated(p0: Activity?, p1: Bundle?) {
+                override fun onActivityCreated(p0: Activity, p1: Bundle?) {
                 }
 
             }

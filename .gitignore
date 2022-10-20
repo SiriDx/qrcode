@@ -16,3 +16,6 @@ qrcode/android/.project
 qrcode/example/android/.project
 .DS_Store
 qrcode/android/.idea
+
+.idea
+.vscode

@@ -24,7 +24,7 @@ class QrcodePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     flutterActivityBinding = binding
     val qRCaptureViewFactory =
       flutterPluginBinding?.let { QRCaptureViewFactory(null, binding, binding.activity, it.binaryMessenger) }
-    flutterPluginBinding?.platformViewRegistry?.registerViewFactory("plugins/qr_capture_view", qRCaptureViewFactory);
+    flutterPluginBinding?.platformViewRegistry?.registerViewFactory("plugins/qr_capture_view", qRCaptureViewFactory!!);
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
@@ -54,7 +54,7 @@ class QrcodePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   companion object {
     @JvmStatic
     fun registerWith(registrar: Registrar) {
-      registrar.platformViewRegistry().registerViewFactory("plugins/qr_capture_view", QRCaptureViewFactory(registrar, null, registrar.activity(), registrar.messenger()))
+      registrar.platformViewRegistry().registerViewFactory("plugins/qr_capture_view", QRCaptureViewFactory(registrar, null, registrar.activity()!!, registrar.messenger()))
     }
   }
 }
